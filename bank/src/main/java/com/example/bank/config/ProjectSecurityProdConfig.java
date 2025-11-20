@@ -1,5 +1,7 @@
 package com.example.bank.config;
 
+import com.example.bank.exceptionhandling.CustomAccessDeniedHandler;
+import com.example.bank.exceptionhandling.CustomBasicAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -10,6 +12,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
+import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -20,15 +23,18 @@ public class ProjectSecurityProdConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
                                                    BankUserDetailsService bankUserDetailsService) throws Exception {
+        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession").maximumSessions(1).maxSessionsPreventsLogin(true));
 
-        http.csrf(csrf -> csrf.disable())
+        http.redirectToHttps((https) -> https.requestMatchers(AnyRequestMatcher.INSTANCE))
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
-                        .requestMatchers("/notices", "/contact", "/error", "/register").permitAll()
+                        .requestMatchers("/notices", "/contact", "/error", "/register","/invalidSession").permitAll()
                 )
                 .userDetailsService(bankUserDetailsService)
                 .formLogin(withDefaults())
-                .httpBasic(withDefaults());
+                .httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
+        http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
 
         return http.build();
     }
