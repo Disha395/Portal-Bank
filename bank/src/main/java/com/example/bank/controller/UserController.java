@@ -1,7 +1,6 @@
 package com.example.bank.controller;
 
 import com.example.bank.Repository.CustomerRepository;
-import com.example.bank.model.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
