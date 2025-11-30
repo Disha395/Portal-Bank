@@ -1,6 +1,7 @@
 package com.example.bank.config;
 
 import com.example.bank.Repository.CustomerRepository;
+import com.example.bank.model.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
