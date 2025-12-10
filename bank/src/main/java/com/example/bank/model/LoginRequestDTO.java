@@ -1,2 +1,5 @@
-package com.example.bank.model;public class LoginRequestDTO {
+package com.example.bank.model;
+
+public record LoginRequestDTO(String username, String password) {
+
 }
