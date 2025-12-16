@@ -13,6 +13,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "base64-js",
+              "js-sha256"
+           ],
             "outputPath": "dist/bank-app-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -94,6 +98,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -103,6 +108,6 @@
     }
   },
   "cli": {
-    "analytics": "3c0a6ef2-441d-40e8-a1c2-c9f954856894"
+    "analytics": "14be3183-8edb-4116-a070-952953b1b14b"
   }
 }
